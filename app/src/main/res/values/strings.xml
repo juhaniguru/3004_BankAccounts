@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">3004_BankAccounts</string>
+    <string name="bank_accounts">Bank Accounts</string>
+    <string name="account_number">Account number</string>
 </resources>
