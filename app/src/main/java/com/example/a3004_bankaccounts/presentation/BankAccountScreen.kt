@@ -39,54 +39,58 @@ import com.example.a3004_bankaccounts.domain.BankAccount
 
 
 @Composable
-fun BankAccountScreenRoot(modifier: Modifier = Modifier) {
+fun BankAccountScreenRoot(modifier: Modifier = Modifier, onNavigate: (Int) -> Unit) {
     val vm = viewModel<BankAccountViewModel>(factory = BankAccountViewModel.createFactory())
     val state by vm.accountsState.collectAsStateWithLifecycle()
 
-    BankAccountScreen(state = state)
+    BankAccountScreen(state = state, onNavigate = onNavigate)
 
 
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BankAccountScreen(modifier: Modifier = Modifier, state: AccountsState) {
+fun BankAccountScreen(modifier: Modifier = Modifier, state: AccountsState, onNavigate: (Int) -> Unit) {
 
     Scaffold(topBar = {
         TopAppBar(title = {
             Text(stringResource(R.string.bank_accounts))
         })
     }) { paddingValues ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues), contentAlignment = Alignment.Center) {
-                when {
-                    state.loading -> CircularProgressIndicator()
-                    state.err != null -> Text(state.err)
-                    else -> AccountsList(accounts = state.items)
-                }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues), contentAlignment = Alignment.Center
+        ) {
+            when {
+                state.loading -> CircularProgressIndicator()
+                state.err != null -> Text(state.err)
+                else -> AccountsList(accounts = state.items, onNavigate = onNavigate)
+            }
         }
     }
 }
 
 @Composable
-fun AccountsList(modifier: Modifier = Modifier, accounts: List<BankAccount>) {
+fun AccountsList(modifier: Modifier = Modifier, accounts: List<BankAccount>, onNavigate : (Int) -> Unit) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(items = accounts) { bankAccount ->
-            AccountItem(account=bankAccount)
+            AccountItem(account = bankAccount, onNavigate = onNavigate)
         }
     }
 }
 
 @Composable
-fun AccountItem(modifier: Modifier = Modifier, account: BankAccount) {
+fun AccountItem(modifier: Modifier = Modifier, account: BankAccount, onNavigate: (Int) -> Unit) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable {
-
+                onNavigate(account.id)
             },
+
+
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
