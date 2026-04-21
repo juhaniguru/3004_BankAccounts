@@ -40,6 +40,9 @@ android {
 dependencies {
 
 
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.vico.charts.m3)
+    implementation(libs.vico.compose)
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.retrofit)

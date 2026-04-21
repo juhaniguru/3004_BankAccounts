@@ -21,11 +21,17 @@ fun BankAccountDetailsScreenRoot(modifier: Modifier = Modifier) {
 
     val state by vm.state.collectAsStateWithLifecycle()
 
-    BankAccountDetailsScreen(state = state)
+    val accountId by vm.accountId.collectAsStateWithLifecycle()
+
+    BankAccountDetailsScreen(state = state, accountId = accountId)
 }
 
 @Composable
-fun BankAccountDetailsScreen(modifier: Modifier = Modifier, state: BankAccountDetailsState) {
+fun BankAccountDetailsScreen(
+    modifier: Modifier = Modifier,
+    state: BankAccountDetailsState,
+    accountId: String
+) {
     Scaffold() { paddingValues ->
         Box(
             modifier = Modifier
@@ -36,7 +42,7 @@ fun BankAccountDetailsScreen(modifier: Modifier = Modifier, state: BankAccountDe
             when {
                 state.loading -> CircularProgressIndicator()
                 state.err != null -> Text(state.err)
-                else -> DetailsGraph()
+                else -> DetailsGraph(accountId = accountId)
             }
         }
     }
@@ -44,6 +50,6 @@ fun BankAccountDetailsScreen(modifier: Modifier = Modifier, state: BankAccountDe
 
 
 @Composable
-fun DetailsGraph(modifier: Modifier = Modifier) {
-    Text("Vico chart tähän")
+fun DetailsGraph(modifier: Modifier = Modifier, accountId: String) {
+    Text("Vico chart tähän $accountId")
 }

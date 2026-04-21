@@ -7,7 +7,7 @@ import com.example.a3004_bankaccounts.domain.DetailDataPoint
 
 class BankAccountAPIImpl : BankAccountAPI {
     override suspend fun getAccounts(): List<BankAccount> {
-        return listOf(BankAccount(1, "FI-123456", "Koti"))
+        return listOf(BankAccount(1, "FI-123456", "Koti"), BankAccount(id = 6, "accountnumber", description = "Koti"))
     }
 
     override suspend fun getAccountDetails(accountId: Int): List<DetailDataPoint> {
