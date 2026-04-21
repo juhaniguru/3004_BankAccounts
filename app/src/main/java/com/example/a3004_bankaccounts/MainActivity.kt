@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.a3004_bankaccounts.presentation.BankAccountDetailsScreenRoot
 import com.example.a3004_bankaccounts.presentation.BankAccountScreenRoot
 import com.example.a3004_bankaccounts.ui.theme._3004_BankAccountsTheme
 
@@ -35,9 +36,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(route = "bankAccountDetailsScreen/{accountId}") {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Text("Detail Screen")
-                        }
+                        BankAccountDetailsScreenRoot()
                     }
                 }
             }
