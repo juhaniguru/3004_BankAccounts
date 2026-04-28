@@ -48,6 +48,11 @@ class BankAccountDetailsViewModel(
         getDetails()
     }
 
+    fun toggleDatePicker() {
+        val newValue = !state.value.showDatePicker
+        _state.update { currentState -> currentState.copy(showDatePicker = newValue) }
+    }
+
     fun updateChart(dataPoints: List<DetailDataPoint>) {
         viewModelScope.launch {
             modelProducer.runTransaction {

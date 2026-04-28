@@ -45,14 +45,17 @@ fun BankAccountDetailsScreenRoot(modifier: Modifier = Modifier) {
 
 
 
-    BankAccountDetailsScreen(state = state, modelProducer = modelProducer)
+    BankAccountDetailsScreen(state = state, modelProducer = modelProducer, onToggleDatePicker = {
+        vm.toggleDatePicker()
+    })
 }
 
 @Composable
 fun BankAccountDetailsScreen(
     modifier: Modifier = Modifier,
     state: BankAccountDetailsState,
-    modelProducer: CartesianChartModelProducer
+    modelProducer: CartesianChartModelProducer,
+    onToggleDatePicker: () -> Unit
 
 ) {
 
@@ -76,7 +79,9 @@ fun BankAccountDetailsScreen(
 
     Scaffold(bottomBar = {
         BottomAppBar() {
-            TextButton(onClick = {}) {
+            TextButton(onClick = {
+                onToggleDatePicker()
+            }) {
                 Icon(Icons.Default.DateRange, contentDescription = "")
                 Spacer(Modifier.width(8.dp))
                 Text(dateLabel)
