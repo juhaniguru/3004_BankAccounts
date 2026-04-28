@@ -5,5 +5,6 @@ import com.example.a3004_bankaccounts.domain.DetailDataPoint
 data class BankAccountDetailsState(
     val loading: Boolean = false,
     val err: String? = null,
-    val dataPoints: List<DetailDataPoint> = emptyList()
+    val dataPoints: List<DetailDataPoint> = emptyList(),
+    val datePickerDate: Long = System.currentTimeMillis()
 )
