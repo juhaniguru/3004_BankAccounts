@@ -1,15 +1,26 @@
 package com.example.a3004_bankaccounts.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -44,10 +55,31 @@ fun BankAccountDetailsScreen(
     modelProducer: CartesianChartModelProducer
 
 ) {
+
+    val dateLabel = remember(state.datePickerDate) {
+
+        val date = java.time.Instant.ofEpochMilli(state.datePickerDate)
+            .atZone(java.time.ZoneOffset.UTC)
+            .toLocalDate()
+
+        val locale = java.util.Locale.getDefault()
+        val monthName = date.month.getDisplayName(java.time.format.TextStyle.FULL, locale)
+
+        // teksti vaihtuu sen mukaan, missä vaiheessa valintaa ollaan
+
+
+        "${date.dayOfMonth} $monthName ${date.year}"
+
+
+    }
+
+
     Scaffold(bottomBar = {
         BottomAppBar() {
             TextButton(onClick = {}) {
-
+                Icon(Icons.Default.DateRange, contentDescription = "")
+                Spacer(Modifier.width(8.dp))
+                Text(dateLabel)
             }
         }
     }) { paddingValues ->
@@ -62,6 +94,10 @@ fun BankAccountDetailsScreen(
                 state.err != null -> Text(state.err)
                 else -> DetailsGraph(modelProducer = modelProducer)
             }
+        }
+
+        if(state.showDatePicker) {
+            CalendarView(initialDate = state.datePickerDate, onSetSelectedDay = {})
         }
     }
 }
@@ -97,4 +133,21 @@ fun DetailsGraph(modifier: Modifier = Modifier, modelProducer: CartesianChartMod
             .fillMaxSize()
             .padding(16.dp)
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CalendarView(initialDate: Long, onSetSelectedDay: (Long?) -> Unit) {
+    // We create a DatePickerState anchored to the selected year/month
+
+
+    val datePickerState = rememberDatePickerState(
+        initialDisplayedMonthMillis = initialDate
+    )
+    // tee tähän päivän valinta
+    LaunchedEffect(datePickerState.selectedDateMillis) {
+        Log.d("juhanitestaa", datePickerState.selectedDateMillis.toString())
+    }
+
+    DatePicker(state = datePickerState, showModeToggle = false)
 }
