@@ -47,6 +47,8 @@ fun BankAccountDetailsScreenRoot(modifier: Modifier = Modifier) {
 
     BankAccountDetailsScreen(state = state, modelProducer = modelProducer, onToggleDatePicker = {
         vm.toggleDatePicker()
+    }, onSelectedDay = {
+        vm.setDatePickerDate(it)
     })
 }
 
@@ -55,15 +57,17 @@ fun BankAccountDetailsScreen(
     modifier: Modifier = Modifier,
     state: BankAccountDetailsState,
     modelProducer: CartesianChartModelProducer,
-    onToggleDatePicker: () -> Unit
+    onToggleDatePicker: () -> Unit,
+    onSelectedDay: (Long?) -> Unit
 
 ) {
 
     val dateLabel = remember(state.datePickerDate) {
 
-        val date = java.time.Instant.ofEpochMilli(state.datePickerDate)
-            .atZone(java.time.ZoneOffset.UTC)
-            .toLocalDate()
+        val date =
+            java.time.Instant.ofEpochMilli(state.datePickerDate ?: System.currentTimeMillis())
+                .atZone(java.time.ZoneOffset.UTC)
+                .toLocalDate()
 
         val locale = java.util.Locale.getDefault()
         val monthName = date.month.getDisplayName(java.time.format.TextStyle.FULL, locale)
@@ -101,8 +105,8 @@ fun BankAccountDetailsScreen(
             }
         }
 
-        if(state.showDatePicker) {
-            CalendarView(initialDate = state.datePickerDate, onSetSelectedDay = {})
+        if (state.showDatePicker) {
+            CalendarView(initialDate = state.datePickerDate, onSetSelectedDay = onSelectedDay)
         }
     }
 }
@@ -125,9 +129,9 @@ fun DetailsGraph(modifier: Modifier = Modifier, modelProducer: CartesianChartMod
                 valueFormatter = CartesianValueFormatter { _, value, _ ->
                     val index = value.toInt()
 
-                        // koska x-akselin arvot alkavat nollasta,
-                        // muokataan niitä valitun stepin mukaan
-                        "${index + 1}"
+                    // koska x-akselin arvot alkavat nollasta,
+                    // muokataan niitä valitun stepin mukaan
+                    "${index + 1}"
 
 
                 }
@@ -142,7 +146,7 @@ fun DetailsGraph(modifier: Modifier = Modifier, modelProducer: CartesianChartMod
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalendarView(initialDate: Long, onSetSelectedDay: (Long?) -> Unit) {
+fun CalendarView(initialDate: Long?, onSetSelectedDay: (Long?) -> Unit) {
     // We create a DatePickerState anchored to the selected year/month
 
 
@@ -152,6 +156,7 @@ fun CalendarView(initialDate: Long, onSetSelectedDay: (Long?) -> Unit) {
     // tee tähän päivän valinta
     LaunchedEffect(datePickerState.selectedDateMillis) {
         Log.d("juhanitestaa", datePickerState.selectedDateMillis.toString())
+        onSetSelectedDay(datePickerState.selectedDateMillis)
     }
 
     DatePicker(state = datePickerState, showModeToggle = false)

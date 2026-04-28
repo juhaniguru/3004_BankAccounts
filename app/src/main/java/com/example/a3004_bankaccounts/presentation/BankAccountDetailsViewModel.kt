@@ -53,6 +53,10 @@ class BankAccountDetailsViewModel(
         _state.update { currentState -> currentState.copy(showDatePicker = newValue) }
     }
 
+    fun setDatePickerDate(newDate: Long?) {
+        _state.update { currentState -> currentState.copy(datePickerDate = newDate) }
+    }
+
     fun updateChart(dataPoints: List<DetailDataPoint>) {
         viewModelScope.launch {
             modelProducer.runTransaction {
