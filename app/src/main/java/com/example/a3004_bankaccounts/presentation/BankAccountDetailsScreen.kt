@@ -155,8 +155,9 @@ fun CalendarView(initialDate: Long?, onSetSelectedDay: (Long?) -> Unit) {
     )
     // tee tähän päivän valinta
     LaunchedEffect(datePickerState.selectedDateMillis) {
-        Log.d("juhanitestaa", datePickerState.selectedDateMillis.toString())
-        onSetSelectedDay(datePickerState.selectedDateMillis)
+        if(datePickerState.selectedDateMillis != null ) {
+            onSetSelectedDay(datePickerState.selectedDateMillis)
+        }
     }
 
     DatePicker(state = datePickerState, showModeToggle = false)
