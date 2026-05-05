@@ -55,19 +55,19 @@ class BankAccountDetailsViewModel(
 
     fun setDatePickerDate(newDate: Long?) {
         _state.update { currentState -> currentState.copy(datePickerDate = newDate) }
-        toggleDatePicker()
+        // toggleDatePicker()
     }
 
     fun updateChart(dataPoints: List<DetailDataPoint>) {
         viewModelScope.launch {
             modelProducer.runTransaction {
                 columnSeries {
-                    val months = FloatArray(12)
+                    val hours = FloatArray(24)
                     dataPoints.forEachIndexed { index, dp ->
-                        months[index] = dp.value
+                        hours[index] = dp.value
                     }
 
-                    series(months.toList())
+                    series(hours.toList())
 
 
                 }
@@ -79,8 +79,8 @@ class BankAccountDetailsViewModel(
         viewModelScope.launch {
             try {
                 _state.update { currentState -> currentState.copy(loading = true, err = null) }
-                delay(1500)
-                val dataPoints = api.getAccountDetails(accountId.value.toInt())
+                //delay(1500)
+                val dataPoints = api.getAccountDetails(accountId.value.toInt(), state.value.datePickerDate, "day")
                 updateChart(dataPoints)
                 _state.update { currentState -> currentState.copy(dataPoints = dataPoints) }
 

@@ -151,7 +151,7 @@ fun CalendarView(initialDate: Long?, onSetSelectedDay: (Long?) -> Unit) {
 
 
     val datePickerState = rememberDatePickerState(
-        initialDisplayedMonthMillis = initialDate
+        initialSelectedDateMillis = initialDate
     )
     // tee tähän päivän valinta
     LaunchedEffect(datePickerState.selectedDateMillis) {
