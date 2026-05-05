@@ -79,7 +79,7 @@ class BankAccountDetailsViewModel(
         viewModelScope.launch {
             try {
                 _state.update { currentState -> currentState.copy(loading = true, err = null) }
-                delay(1500)
+                //delay(1500)
                 val dataPoints = api.getAccountDetails(accountId.value.toInt(), state.value.datePickerDate, "day")
                 updateChart(dataPoints)
                 _state.update { currentState -> currentState.copy(dataPoints = dataPoints) }

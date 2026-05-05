@@ -55,6 +55,9 @@ fun BankAccountDetailsScreenRoot(modifier: Modifier = Modifier) {
         vm.toggleDatePicker()
     }, onSelectedDay = {
         vm.setDatePickerDate(it)
+    }, onGetDetails = {
+        vm.getDetails()
+        vm.toggleDatePicker()
     })
 }
 
@@ -64,7 +67,8 @@ fun BankAccountDetailsScreen(
     state: BankAccountDetailsState,
     modelProducer: CartesianChartModelProducer,
     onToggleDatePicker: () -> Unit,
-    onSelectedDay: (Long?) -> Unit
+    onSelectedDay: (Long?) -> Unit,
+    onGetDetails : () -> Unit
 
 ) {
 
@@ -112,7 +116,7 @@ fun BankAccountDetailsScreen(
         }
 
         if (state.showDatePicker) {
-            CalendarView(initialDate = state.datePickerDate, onSetSelectedDay = onSelectedDay)
+            CalendarView(initialDate = state.datePickerDate, onSetSelectedDay = onSelectedDay, onGetDetails = onGetDetails)
         }
     }
 }
@@ -152,7 +156,7 @@ fun DetailsGraph(modifier: Modifier = Modifier, modelProducer: CartesianChartMod
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalendarView(initialDate: Long?, onSetSelectedDay: (Long?) -> Unit) {
+fun CalendarView(initialDate: Long?, onSetSelectedDay: (Long?) -> Unit, onGetDetails : () -> Unit) {
     // We create a DatePickerState anchored to the selected year/month
 
 
@@ -169,7 +173,9 @@ fun CalendarView(initialDate: Long?, onSetSelectedDay: (Long?) -> Unit) {
     DatePickerDialog(
         onDismissRequest = {},
         confirmButton = {
-            TextButton(onClick = {}) {
+            TextButton(onClick = {
+                onGetDetails()
+            }) {
                 Text("OK")
             }
         },
