@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -106,11 +107,39 @@ fun BankAccountDetailsScreen(
         }
 
         if (state.showDatePicker) {
-            CalendarView(initialDate = state.datePickerDate, onSetSelectedDay = onSelectedDay)
+            CalendarView(initialDate = state.datePickerDate, onSetSelectedDay = onSelectedDay, onToggleDatePicker = onToggleDatePicker)
         }
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CalendarView(initialDate: Long?, onSetSelectedDay: (Long?) -> Unit, onToggleDatePicker: () -> Unit) {
+    // We create a DatePickerState anchored to the selected year/month
+
+
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = initialDate
+    )
+    // tee tähän päivän valinta
+    LaunchedEffect(datePickerState.selectedDateMillis) {
+        if (datePickerState.selectedDateMillis != null) {
+            onSetSelectedDay(datePickerState.selectedDateMillis)
+        }
+    }
+
+    DatePickerDialog(onDismissRequest = {
+        onToggleDatePicker()
+    }, confirmButton = {
+        TextButton(onClick = {}) {
+            Text("Ok")
+        }
+    }) {
+        DatePicker(state = datePickerState, showModeToggle = false)
+    }
+    //DatePicker(state = datePickerState, showModeToggle = false)
+}
 
 @Composable
 fun DetailsGraph(modifier: Modifier = Modifier, modelProducer: CartesianChartModelProducer) {
@@ -142,23 +171,4 @@ fun DetailsGraph(modifier: Modifier = Modifier, modelProducer: CartesianChartMod
             .fillMaxSize()
             .padding(16.dp)
     )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CalendarView(initialDate: Long?, onSetSelectedDay: (Long?) -> Unit) {
-    // We create a DatePickerState anchored to the selected year/month
-
-
-    val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = initialDate
-    )
-    // tee tähän päivän valinta
-    LaunchedEffect(datePickerState.selectedDateMillis) {
-        if(datePickerState.selectedDateMillis != null ) {
-            onSetSelectedDay(datePickerState.selectedDateMillis)
-        }
-    }
-
-    DatePicker(state = datePickerState, showModeToggle = false)
 }
