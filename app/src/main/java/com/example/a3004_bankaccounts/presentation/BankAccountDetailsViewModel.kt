@@ -62,12 +62,12 @@ class BankAccountDetailsViewModel(
         viewModelScope.launch {
             modelProducer.runTransaction {
                 columnSeries {
-                    val months = FloatArray(12)
+                    val hours = FloatArray(24)
                     dataPoints.forEachIndexed { index, dp ->
-                        months[index] = dp.value
+                        hours[index] = dp.value
                     }
 
-                    series(months.toList())
+                    series(hours.toList())
 
 
                 }
