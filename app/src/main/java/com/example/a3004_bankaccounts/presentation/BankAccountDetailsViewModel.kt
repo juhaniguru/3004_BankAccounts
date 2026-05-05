@@ -55,7 +55,7 @@ class BankAccountDetailsViewModel(
 
     fun setDatePickerDate(newDate: Long?) {
         _state.update { currentState -> currentState.copy(datePickerDate = newDate) }
-        toggleDatePicker()
+        //toggleDatePicker()
     }
 
     fun updateChart(dataPoints: List<DetailDataPoint>) {

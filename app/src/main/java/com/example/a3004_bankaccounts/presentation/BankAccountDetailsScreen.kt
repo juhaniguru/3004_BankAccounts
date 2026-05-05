@@ -1,6 +1,8 @@
 package com.example.a3004_bankaccounts.presentation
 
+
 import android.util.Log
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +35,10 @@ import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProdu
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberColumnCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.TextStyle
+import java.util.Locale
 
 @Composable
 fun BankAccountDetailsScreenRoot(modifier: Modifier = Modifier) {
@@ -65,12 +71,12 @@ fun BankAccountDetailsScreen(
     val dateLabel = remember(state.datePickerDate) {
 
         val date =
-            java.time.Instant.ofEpochMilli(state.datePickerDate ?: System.currentTimeMillis())
-                .atZone(java.time.ZoneOffset.UTC)
+            Instant.ofEpochMilli(state.datePickerDate ?: System.currentTimeMillis())
+                .atZone(ZoneOffset.UTC)
                 .toLocalDate()
 
-        val locale = java.util.Locale.getDefault()
-        val monthName = date.month.getDisplayName(java.time.format.TextStyle.FULL, locale)
+        val locale = Locale.getDefault()
+        val monthName = date.month.getDisplayName(TextStyle.FULL, locale)
 
         // teksti vaihtuu sen mukaan, missä vaiheessa valintaa ollaan
 
@@ -160,5 +166,24 @@ fun CalendarView(initialDate: Long?, onSetSelectedDay: (Long?) -> Unit) {
         }
     }
 
-    DatePicker(state = datePickerState, showModeToggle = false)
+    DatePickerDialog(
+        onDismissRequest = {},
+        confirmButton = {
+            TextButton(onClick = {}) {
+                Text("OK")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = {
+
+            }) {
+                Text("Close")
+            }
+        }
+
+    ) {
+        DatePicker(state = datePickerState, showModeToggle = false)
+    }
+
+
 }
