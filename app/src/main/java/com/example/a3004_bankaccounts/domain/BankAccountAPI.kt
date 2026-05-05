@@ -11,7 +11,7 @@ interface BankAccountAPI {
     @GET("accounts/{accountId}/events/{dt}/{step}")
     suspend fun getAccountDetails(
         @Path("accountId") accountId: Int,
-        @Path("dt") dt: Long,
+        @Path("dt") dt: Long?,
         @Path("step") step: String
     ): List<DetailDataPoint>
 }

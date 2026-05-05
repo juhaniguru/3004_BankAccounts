@@ -10,7 +10,15 @@ class BankAccountAPIImpl : BankAccountAPI {
         return listOf(BankAccount(1, "FI-123456", "Koti"), BankAccount(id = 6, "accountnumber", description = "Koti"))
     }
 
-    override suspend fun getAccountDetails(accountId: Int): List<DetailDataPoint> {
+    override suspend fun getAccountDetails(
+        accountId: Int,
+        dt: Long?,
+        step: String
+    ): List<DetailDataPoint> {
+        TODO("Not yet implemented")
+    }
+
+    suspend fun getAccountDetails(accountId: Int): List<DetailDataPoint> {
         return listOf(DetailDataPoint(
             dt = "2026-01-01",
             value = 1f
