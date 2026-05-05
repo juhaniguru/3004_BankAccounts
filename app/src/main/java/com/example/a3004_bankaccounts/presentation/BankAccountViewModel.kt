@@ -57,5 +57,17 @@ class BankAccountViewModel(private val api: BankAccountAPI) : ViewModel() {
 
     }
 
+    fun register() {
+
+    }
+
+    fun login() {}
+
+    fun registerAndLogin() {
+        register()
+        login()
+    }
+
 
 }
+

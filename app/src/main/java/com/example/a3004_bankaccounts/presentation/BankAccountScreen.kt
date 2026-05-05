@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -63,7 +64,7 @@ fun BankAccountScreen(modifier: Modifier = Modifier, state: AccountsState, onNav
                 .padding(paddingValues), contentAlignment = Alignment.Center
         ) {
             when {
-                state.loading -> CircularProgressIndicator()
+                state.loading -> CircularProgressIndicator(modifier = Modifier.testTag("loading"))
                 state.err != null -> Text(state.err)
                 else -> AccountsList(accounts = state.items, onNavigate = onNavigate)
             }
